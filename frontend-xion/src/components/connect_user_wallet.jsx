@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Abstraxion,
   useAbstraxionAccount,
@@ -8,21 +7,52 @@ import {
 } from "@burnt-labs/abstraxion";
 
 import { useRouter } from "next/navigation";
+import dbConnect from "@/lib/database/connection";
+import UserModel from "@/lib/database/models/user-model";
+import PointsModel from "@/lib/database/models/points-model";
+import { useGlobalProvider } from "@/lib/globalProvider";
 
-export default function ConnectUserWallet(): React.JSX.Element {
+export default function ConnectUserWallet() {
   const router = useRouter();
-  const { data: { bech32Address }, isConnected, isConnecting } = useAbstraxionAccount();
-  
-  // Use the modal state from Abstraxion
+  const { data: { bech32Address }, isConnected } = useAbstraxionAccount();
   const [, setShowModal] = useModal();
+  const { setAddress } = useGlobalProvider();
+
+  const registerUser = async (address) => {
+    try {
+      await dbConnect();
+      let existingUser = await UserModel.findOne({ address });
+
+      if (!existingUser) {
+        existingUser = new UserModel({ address });
+        await existingUser.save();
+
+        const point_details = new PointsModel({
+          user: existingUser._id,
+          points: 0,
+        });
+
+        await point_details.save();
+      }
+
+      setUser({ ...existingUser._doc, isLogged: true }); // update global state
+      router.push("/challenges");
+
+    } catch (error) {
+      console.error("Error connecting to the database:", error);
+    }
+  };
 
   useEffect(() => {
+
     if (isConnected) {
+      registerUser(bech32Address);
+      setAddress(bech32Address);
       router.push("/challenges");
     }
   }, [isConnected]);
 
-  const FeatureCard: React.FC<{ label: string; description: string }> = ({ label, description }) => {
+  function FeatureCard ({ label, description }) {
     return (
       <div className="bg-primary/50 p-4 rounded-lg ">
         <h2 className="text-white">{label}</h2>
@@ -49,7 +79,7 @@ export default function ConnectUserWallet(): React.JSX.Element {
       description: "Discover and try new healthy recipes. 🍳",
     },
   ];
-  
+
 
   return (
     <main className="body px-20">
@@ -63,10 +93,10 @@ export default function ConnectUserWallet(): React.JSX.Element {
             className="bg-green-500 text-black px-4 py-2 rounded-lg"
           >
             {bech32Address ? (
-            <div className="flex items-center justify-center">VIEW YOUR ACCOUNT</div>
-          ) : (
-            "GET STARTED"
-          )}
+              <div className="flex items-center justify-center cursor-pointer">VIEW YOUR ACCOUNT</div>
+            ) : (
+              <div className="flex items-center justify-center cursor-pointer">GET STARTED</div>
+            )}
           </button>
         </div>
 

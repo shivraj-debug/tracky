@@ -10,9 +10,21 @@
   },
   "dependencies": {
     "@burnt-labs/abstraxion": "^1.0.0-alpha.60",
-    "next": "14.2.17",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@reduxjs/toolkit": "^2.6.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.487.0",
+    "mongoose": "^8.13.2",
+    "next": "^15.2.4",
+    "next-auth": "^4.24.11",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hot-toast": "^2.5.2",
+    "react-redux": "^9.2.0",
+    "tailwind-merge": "^3.1.0",
+    "tw-animate-css": "^1.2.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

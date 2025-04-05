@@ -4,8 +4,6 @@ import React from "react";
 
 const AbstraxionProviderWrapper = ({
   children,
-}: {
-  children: React.ReactNode;
 }) => {
   const treasuryConfig = {
     treasury: process.env.NEXT_PUBLIC_TREASURY_CONTRACT,
