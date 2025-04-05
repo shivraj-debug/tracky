@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/challenges/page.jsx", "src/app/layout.jsx", "src/app/page.jsx", "src/components/abstraxion_provider_wrapper.jsx", "src/components/connect_user_wallet.jsx"],
   "exclude": ["node_modules"]
 }
