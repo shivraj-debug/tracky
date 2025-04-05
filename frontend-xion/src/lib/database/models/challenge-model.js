@@ -60,13 +60,13 @@ const completedChallengeSchema = new mongoose.Schema({
   },
 });
 
-export const CompletedChallengeModel =
-  models.completedChallenge ||
-  mongoose.model("completedChallenge", completedChallengeSchema);
+export const CompletedChallenge =
+  mongoose.models?.CompletedChallenge ||
+  mongoose.model("CompletedChallenge", completedChallengeSchema);
 
-const ChallengeModel = mongoose.model("challenge", challengeSchema);
+const Challenge = mongoose.models?.Challenge || mongoose.model("Challenge", challengeSchema);
 
 // create a model that store challenge details
 // and second model that takes refrence of the challange and tracks the progress of the challenge
 
-export default ChallengeModel;
+export default Challenge;

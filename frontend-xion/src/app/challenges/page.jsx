@@ -9,13 +9,13 @@ const ChallengePage = () => {
   const { address } = useGlobalProvider();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!address) {
-  //     router.push("/"); // redirect to homepage if not connected
-  //   }
-  // }, [address]);
+  useEffect(() => {
+    if (!address) {
+      router.push("/"); // redirect to homepage if not connected
+    }
+  }, [address]);
 
-  // if (!address) return null; // or a loading spinner
+  if (!address) return null; // or a loading spinner
 
   return (
     <div className="px-16">

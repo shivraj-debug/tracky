@@ -7,9 +7,6 @@ import {
 } from "@burnt-labs/abstraxion";
 
 import { useRouter } from "next/navigation";
-import dbConnect from "@/lib/database/connection";
-import UserModel from "@/lib/database/models/user-model";
-import PointsModel from "@/lib/database/models/points-model";
 import { useGlobalProvider } from "@/lib/globalProvider";
 
 export default function ConnectUserWallet() {
@@ -20,24 +17,18 @@ export default function ConnectUserWallet() {
 
   const registerUser = async (address) => {
     try {
-      await dbConnect();
-      let existingUser = await UserModel.findOne({ address });
+      const response = await fetch("/api/user/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address }),
+      });
 
-      if (!existingUser) {
-        existingUser = new UserModel({ address });
-        await existingUser.save();
-
-        const point_details = new PointsModel({
-          user: existingUser._id,
-          points: 0,
-        });
-
-        await point_details.save();
+      const data = await response.json();
+      if (data.success) {
+        console.log("User registered successfully:", data.user);
+      } else {
+        console.error("Error registering user:", data.message);
       }
-
-      setUser({ ...existingUser._doc, isLogged: true }); // update global state
-      router.push("/challenges");
-
     } catch (error) {
       console.error("Error connecting to the database:", error);
     }
