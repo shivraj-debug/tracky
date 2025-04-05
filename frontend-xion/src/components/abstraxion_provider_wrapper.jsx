@@ -7,8 +7,8 @@ const AbstraxionProviderWrapper = ({
 }) => {
   const treasuryConfig = {
     treasury: process.env.NEXT_PUBLIC_TREASURY_CONTRACT,
-    rpcUrl: "https://rpc.xion-testnet-2.burnt.com:433",
-    restUrl: "https://api.xion-testnet-2.burnt.com:433"
+    rpcUrl: "https://rpc.xion-testnet-2.burnt.com/",
+    restUrl: "https://api.xion-testnet-2.burnt.com/"
   };
 
   return (

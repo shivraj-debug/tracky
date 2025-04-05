@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -12,23 +12,29 @@ import {
 import FormField from "../custom/FormField";
 import toast from "react-hot-toast";
 import { createChallenge } from "@/lib/api/challenge";
+import { useGlobalProvider } from "@/lib/globalProvider";
 
-const CreateChallenge = ({ session }) => {
+const CreateChallenge = () => {
+  const { address } = useGlobalProvider(); // ✅ get address from context
+
   const [challenge, setChallenge] = useState({
     challenge_name: "",
     tasks: [""],
   });
 
-  // useEffect(() => {
-  //   console.log(session);
-  // }, [session]);
   const handleCreateChallenge = () => {
+    if (!address) {
+      toast.error("Please connect your wallet first.");
+      return;
+    }
+
+    console.log("Challenge data:", challenge); // ✅ log the challenge data
+
     createChallenge(
       challenge.challenge_name,
       challenge.tasks,
-      session?.user?.id
+      "address" // ✅ use address instead of session.user.id
     ).then((res) => {
-      
       if (res?.success === true) {
         toast.success("Challenge Created");
       } else {
@@ -36,6 +42,7 @@ const CreateChallenge = ({ session }) => {
       }
     });
   };
+
   return (
     <div>
       <Sheet>
@@ -54,15 +61,15 @@ const CreateChallenge = ({ session }) => {
                   handleChange={(value) => {
                     setChallenge({ ...challenge, challenge_name: value });
                   }}
-                  label={"Testing"}
+                  label={"Challenge Name"}
                   defaultValue={""}
                 />
 
-                <span className="inline-block text-lg font-semibold  mt-4">
+                <span className="inline-block text-lg font-semibold mt-4">
                   Tasks
                 </span>
                 <span className="flex mt-4 flex-col gap-4">
-                  {challenge?.tasks?.map((challenge, index) => (
+                  {challenge?.tasks?.map((task, index) => (
                     <FormField
                       key={index}
                       type={"text"}
@@ -74,7 +81,7 @@ const CreateChallenge = ({ session }) => {
                         });
                       }}
                       label={`Task ${index + 1}`}
-                      defaultValue={""}
+                      defaultValue={task}
                     />
                   ))}
                 </span>
@@ -90,9 +97,7 @@ const CreateChallenge = ({ session }) => {
                 </span>
                 <span
                   className="btn border bg-primary px-2 py-2 rounded-md text-white font-semibold mt-4"
-                  onClick={() => {
-                    handleCreateChallenge();
-                  }}
+                  onClick={handleCreateChallenge}
                 >
                   Create Challenge
                 </span>

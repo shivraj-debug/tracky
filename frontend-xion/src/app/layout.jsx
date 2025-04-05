@@ -13,7 +13,7 @@ const RubikFont = Rubik({
 
 export const metadata = {
   title: "Tracky",
-  description: "AI-powered and Blockchain powered image generator",
+  description: "AI-powered and Blockchain Tracking Website",
 };
 
 export default function RootLayout({
